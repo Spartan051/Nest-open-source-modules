@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ErrorController } from './error.controller';
-import { ErrorService } from './error.service';
+import { ErrorController } from '../error.controller';
+import { ErrorService } from '../error.service';
 
 describe('ErrorController', () => {
   let controller: ErrorController;
