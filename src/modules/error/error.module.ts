@@ -1,9 +1,20 @@
 import { Module } from '@nestjs/common';
+import { ERROR_PROVIDER_TOKEN } from './constants/error-provider-token.constants';
 import { ErrorService } from './error.service';
-import { ErrorController } from './error.controller';
+import { IErrorConfig } from './interface';
 
-@Module({
-  controllers: [ErrorController],
-  providers: [ErrorService]
-})
-export class ErrorModule {}
+@Module({})
+export class ErrorModule {
+  static forRoot(errorConfig: IErrorConfig) {
+    return {
+      module: ErrorModule,
+      providers: [
+        {
+          provide: ERROR_PROVIDER_TOKEN,
+          useValue: { language: errorConfig.language.toUpperCase() },
+        },
+      ],
+      exports: [ErrorService],
+    };
+  }
+}
