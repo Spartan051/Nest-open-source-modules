@@ -1,27 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { ErrorService } from '../exeption/exeption.service';
-import { UpdateRediDto } from './dto/update-redi.dto';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class RedisService {
-  constructor(private readonly errorService: ErrorService) {}
-  create() {
-    this.errorService.internalServerError();
+  constructor(@InjectRedis() private readonly redis: Redis) {}
+
+  async getValue(key: string): Promise<string> {
+    return await this.redis.get(key);
   }
 
-  findAll() {
-    return `This action returns all redis`;
+  async setValue<T>(key: string, value: T): Promise<boolean> {
+    return !!(await this.redis.set(key, JSON.stringify(value)));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} redi`;
+  async setValueWhitExpiry<T>(
+    key: string,
+    value: T,
+    duration: string,
+  ): Promise<boolean> {
+    return !!(await this.redis.set(key, JSON.stringify(value), 'EX', duration));
   }
 
-  update(id: number, updateRediDto: UpdateRediDto) {
-    return `This action updates a #${id} redi`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} redi`;
+  async deleteValue(key: string): Promise<boolean> {
+    return !!(await this.redis.del(key));
   }
 }
