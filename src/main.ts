@@ -1,9 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+import { EnvService } from './modules/config/env.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Swagger
   const config = new DocumentBuilder()
     .setTitle('open-source')
     .setDescription('Document API')
@@ -12,6 +15,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(3000);
+
+  // call env service
+  const envService = app.get(EnvService);
+
+  await app.listen(envService.port);
 }
 bootstrap();
