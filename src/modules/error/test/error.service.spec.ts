@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ErrorService } from './error.service';
+import { ErrorService } from '../error.service';
 
 describe('ErrorService', () => {
   let service: ErrorService;
