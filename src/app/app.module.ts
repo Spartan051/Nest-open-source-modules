@@ -15,7 +15,7 @@ import envProductionValidation from 'src/modules/config/validation/env-productio
 @Module({
   imports: [
     EnvModule,
-    RedisModule,
+    RedisModule.forRoot(),
     ExeptionModule.forRoot({ language: Languages.FA }),
     ConfigModule.forRoot({
       envFilePath:
