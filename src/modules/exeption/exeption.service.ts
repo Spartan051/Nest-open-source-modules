@@ -6,14 +6,15 @@ import {
   BadRequestException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { DYNAMIC_MESSAGE, ERROR_PROVIDER_TOKEN } from './constants';
+import { EXEPTION_PROVIDER_TOKEN, DYNAMIC_MESSAGE } from './constants';
 import { EnMessages, FaMessages, Languages } from './enums';
-import { IErrorConfig, IExeptionArgs } from './interface';
+import { IExeptionArgs, IExeptionConfig } from './interface';
 
 @Injectable()
-export class ErrorService {
+export class ExeptionService {
   constructor(
-    @Inject(ERROR_PROVIDER_TOKEN) private readonly errorConfig: IErrorConfig,
+    @Inject(EXEPTION_PROVIDER_TOKEN)
+    private readonly errorConfig: IExeptionConfig,
   ) {}
 
   private throwDefaultMessage(

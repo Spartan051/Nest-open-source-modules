@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ErrorService } from '../error.service';
+import { ExeptionService } from '../exeption.service';
 
-describe('ErrorService', () => {
-  let service: ErrorService;
+describe('ExeptionService', () => {
+  let service: ExeptionService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ErrorService],
+      providers: [ExeptionService],
     }).compile();
 
-    service = module.get<ErrorService>(ErrorService);
+    service = module.get<ExeptionService>(ExeptionService);
   });
 
   it('should be defined', () => {

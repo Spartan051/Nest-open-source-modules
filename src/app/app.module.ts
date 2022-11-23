@@ -4,11 +4,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import envValidation from 'src/modules/config/env-validation';
 import { EnvModule } from 'src/modules/config/env.module';
-import { ErrorModule } from 'src/modules/error/error.module';
-import { Languages } from 'src/modules/error/enums';
-import { APP_FILTER } from '@nestjs/core';
-import { AllExceptionsFilter } from 'src/modules/error/exeption-filter';
 import { RedisModule } from 'src/modules/redis/redis.module';
+import { ExeptionModule } from 'src/modules/exeption/exeption.module';
+import { Languages } from 'src/modules/exeption/enums';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from 'src/modules/exeption/exeption-filter';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { RedisModule } from 'src/modules/redis/redis.module';
       validationSchema: envValidation,
     }),
     EnvModule,
-    ErrorModule.forRoot({ language: Languages.FA }),
+    ExeptionModule.forRoot({ language: Languages.FA }),
     RedisModule,
   ],
   controllers: [AppController],

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ErrorService } from '../error/error.service';
+import { ErrorService } from '../exeption/exeption.service';
 import { UpdateRediDto } from './dto/update-redi.dto';
 
 @Injectable()
