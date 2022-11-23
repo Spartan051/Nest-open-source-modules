@@ -1,0 +1,7 @@
+add variable in './env' files
+
+add variable type in './interface' files
+
+add validation for variable in './validation' files
+
+add get method for variable in 'env.service.ts'
