@@ -1,0 +1,19 @@
+-- NOT FOUND --
+notFoundError()
+notFoundError(target)
+customNotFoundError(custom_message)
+
+-- FORBIDEEN --
+forbiddenError()
+forbiddenError(section)
+customForbiddenError(custom_message)
+
+-- BAD REQEST --
+badRequestError()
+customBadRequestError(custom_message)
+
+-- INTERNAL SERVER --
+internalServerError()
+customInternalServerError(custom_message)
+
+

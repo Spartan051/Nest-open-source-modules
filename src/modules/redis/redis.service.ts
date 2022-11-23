@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRediDto } from './dto/create-redi.dto';
+import { ErrorService } from '../error/error.service';
 import { UpdateRediDto } from './dto/update-redi.dto';
 
 @Injectable()
 export class RedisService {
-  create(createRediDto: CreateRediDto) {
-    return 'This action adds a new redi';
+  constructor(private readonly errorService: ErrorService) {}
+  create() {
+    this.errorService.internalServerError();
   }
 
   findAll() {

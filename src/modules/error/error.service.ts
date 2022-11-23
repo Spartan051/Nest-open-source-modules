@@ -3,18 +3,12 @@ import {
   Inject,
   NotFoundException,
   ForbiddenException,
+  BadRequestException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import {
-  EN_DEFAULT_NOT_FOUND_MESSAGE,
-  EN_NOT_FOUND_MESSAGE,
-  ERROR_PROVIDER_TOKEN,
-  FA_DEFAULT_NOT_FOUND_MESSAGE,
-  FA_FORBIDDEN_MESSAGE,
-  FA_NOT_FOUND_MESSAGE,
-} from './constants';
-import { Languages } from './enums';
-import { IErrorConfig } from './interface';
+import { DYNAMIC_MESSAGE, ERROR_PROVIDER_TOKEN } from './constants';
+import { EnMessages, FaMessages, Languages } from './enums';
+import { IErrorConfig, IExeptionArgs } from './interface';
 
 @Injectable()
 export class ErrorService {
@@ -22,8 +16,8 @@ export class ErrorService {
     @Inject(ERROR_PROVIDER_TOKEN) private readonly errorConfig: IErrorConfig,
   ) {}
 
-  private throwDefaultMessage<T extends new (n: string) => {}>(
-    exeption: T,
+  private throwDefaultMessage(
+    exeption: IExeptionArgs,
     enDefaultMessage: string,
     faDefaultMessage: string,
   ): never {
@@ -39,8 +33,8 @@ export class ErrorService {
     }
   }
 
-  private throwConcatedMessage<T extends new (n: string) => {}>(
-    exeption: T,
+  private throwConcatedMessage(
+    exeption: IExeptionArgs,
     target: string,
     enMessage: string,
     faMessage: string,
@@ -55,30 +49,27 @@ export class ErrorService {
     }
   }
 
-  private throwSlicedMessage<T extends new (n: string) => {}>(
-    exeption: T,
+  private throwDynamicMessage(
+    exeption: IExeptionArgs,
     message: string,
     target: string,
-    index: number,
   ): never {
-    throw new exeption(
-      message.slice(0, index).concat(target, message.slice(index)),
-    );
+    throw new exeption(message.replace(DYNAMIC_MESSAGE, target));
   }
 
   notFoundError(target?: string): never {
     if (!target)
       this.throwDefaultMessage(
         NotFoundException,
-        EN_DEFAULT_NOT_FOUND_MESSAGE,
-        FA_DEFAULT_NOT_FOUND_MESSAGE,
+        EnMessages.DEFAULT_NOT_FOUND,
+        FaMessages.DEFAULT_NOT_FOUND,
       );
 
     this.throwConcatedMessage(
       NotFoundException,
       target,
-      EN_NOT_FOUND_MESSAGE,
-      FA_NOT_FOUND_MESSAGE,
+      EnMessages.NOT_FOUND,
+      FaMessages.NOT_FOUND,
     );
   }
 
@@ -90,22 +81,25 @@ export class ErrorService {
     if (!target)
       this.throwDefaultMessage(
         ForbiddenException,
-        EN_DEFAULT_NOT_FOUND_MESSAGE,
-        FA_DEFAULT_NOT_FOUND_MESSAGE,
+        EnMessages.DEFAULT_FORBIDDEN,
+        FaMessages.DEFAULT_FORBIDDEN,
       );
 
     switch (this.errorConfig.language) {
       case Languages.FA:
-        this.throwSlicedMessage(
+        this.throwDynamicMessage(
           ForbiddenException,
-          FA_FORBIDDEN_MESSAGE,
+          FaMessages.FORBIDDEN,
           target,
-          11,
         );
       case Languages.EN:
-        throw new ForbiddenException(target.concat(' ', EN_NOT_FOUND_MESSAGE));
+        this.throwDynamicMessage(
+          ForbiddenException,
+          EnMessages.FORBIDDEN,
+          target,
+        );
       default:
-        throw new ForbiddenException(EN_DEFAULT_NOT_FOUND_MESSAGE);
+        throw new ForbiddenException(EnMessages.DEFAULT_FORBIDDEN);
     }
   }
 
@@ -113,8 +107,24 @@ export class ErrorService {
     throw new ForbiddenException(message);
   }
 
-  InternalServerError(): never {
-    throw new InternalServerErrorException();
+  badRequestError(): never {
+    this.throwDefaultMessage(
+      BadRequestException,
+      EnMessages.DEFAULT_BAD_REQUEST,
+      FaMessages.DEFAULT_BAD_REQUEST,
+    );
+  }
+
+  customBadRequestError(message: string): never {
+    throw new BadRequestException(message);
+  }
+
+  internalServerError(): never {
+    this.throwDefaultMessage(
+      InternalServerErrorException,
+      EnMessages.INTERNAL_SERVER,
+      FaMessages.INTERNAL_SERVER,
+    );
   }
 
   customInternalServerError(message: string): never {

@@ -13,6 +13,22 @@ export class ErrorModule {
           provide: ERROR_PROVIDER_TOKEN,
           useValue: { language: errorConfig.language.toUpperCase() },
         },
+        ErrorService,
+      ],
+      exports: [ErrorService],
+      global: true,
+    };
+  }
+
+  static forFeature(errorConfig: IErrorConfig) {
+    return {
+      module: ErrorModule,
+      providers: [
+        {
+          provide: ERROR_PROVIDER_TOKEN,
+          useValue: { language: errorConfig.language.toUpperCase() },
+        },
+        ErrorService,
       ],
       exports: [ErrorService],
     };
