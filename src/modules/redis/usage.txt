@@ -1,0 +1,25 @@
+value : string | number | buffer
+all methods have (callback?) by last argument
+callback : (err?,result?)=>{}
+
+-- GLOBAL --
+append(key,value)
+
+-- STRING --
+set(key,value,'EX'?,expiration?) expiration as second
+setnx(key,value) stored if not exist whit no expiration
+get(key)
+mget(key1,key2) multyple keys
+getdel(key) get and delete key
+getex(key,'EX'? | 'PERSIST'?,expiration?) get and set expiration or remove expiration
+getrange(key,start,end)
+getset(key,value)
+
+
+-- NUMBER --
+incr(key)
+incrby(key,value)
+incrbyfloat(key,value)
+decr(key)
+decrby(key,value)
+

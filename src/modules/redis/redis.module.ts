@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RedisService } from './redis.service';
 import { RedisModule as Redis } from '@liaoliaots/nestjs-redis';
+import { RedisConfig } from './config/redis-config';
 
 @Module({})
 export class RedisModule {
@@ -8,11 +9,8 @@ export class RedisModule {
     return {
       module: RedisModule,
       imports: [
-        Redis.forRoot({
-          config: {
-            host: 'localhost',
-            port: 6379,
-          },
+        Redis.forRootAsync({
+          useClass: RedisConfig,
         }),
       ],
       providers: [RedisService],
@@ -25,11 +23,8 @@ export class RedisModule {
     return {
       module: RedisModule,
       imports: [
-        Redis.forRoot({
-          config: {
-            host: 'localhost',
-            port: 6379,
-          },
+        Redis.forRootAsync({
+          useClass: RedisConfig,
         }),
       ],
       providers: [RedisService],

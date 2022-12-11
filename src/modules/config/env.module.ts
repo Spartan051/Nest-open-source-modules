@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
 import { EnvService } from './env.service';
 
-@Module({
-  providers: [EnvService],
-  exports: [EnvService],
-})
-export class EnvModule {}
+@Module({})
+export class EnvModule {
+  static forRoot() {
+    return {
+      module: EnvModule,
+      providers: [EnvService],
+      exports: [EnvService],
+      global: true,
+    };
+  }
+}

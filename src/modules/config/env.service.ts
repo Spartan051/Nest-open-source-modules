@@ -9,4 +9,16 @@ export class EnvService {
   get port(): number {
     return this.configService.get('port', { infer: true });
   }
+
+  get redisHost(): string {
+    return this.configService.get('redis_host', { infer: true });
+  }
+
+  get redisPassword(): string {
+    return this.configService.get('redis_password', { infer: true });
+  }
+
+  get redisPort(): number {
+    return this.configService.get('redis_port', { infer: true });
+  }
 }
